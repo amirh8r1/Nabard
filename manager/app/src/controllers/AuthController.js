@@ -6,6 +6,8 @@ const Prisma = require("../databases/Prisma");
 
 const AuthSchema = require("../schemas/AuthSchema");
 
+const AuthService = require("../services/AuthService");
+
 module.exports = class AuthController {
   static async login(req, res, next) {
     try {

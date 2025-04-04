@@ -11,7 +11,7 @@ module.exports = class AuthRouter {
   }
 
   static setupRouter() {
-    router.get("/login", AuthController.login, ResponseMiddleware.send);
+    router.post("/login", AuthController.login, ResponseMiddleware.send);
 
     router.get("/refresh", AuthController.refresh, ResponseMiddleware.send);
 
