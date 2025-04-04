@@ -1,0 +1,45 @@
+const prisma = require("@prisma/client");
+
+const ServerLogger = require("../../server/ServerLogger");
+
+const Prisma = new prisma.PrismaClient({
+  errorFormat: "pretty",
+  log: [
+    {
+      emit: "event",
+      level: "query",
+    },
+    {
+      emit: "event",
+      level: "error",
+    },
+    {
+      emit: "event",
+      level: "info",
+    },
+    {
+      emit: "event",
+      level: "warn",
+    },
+  ],
+});
+
+ServerLogger.info("Prisma configured successfully.");
+
+Prisma.$on("error", (event) => {
+  ServerLogger.error("event", event);
+});
+
+Prisma.$on("warn", (event) => {
+  ServerLogger.warn("event", event);
+});
+
+Prisma.$on("info", (event) => {
+  ServerLogger.info("event", event);
+});
+
+Prisma.$on("query", (event) => {
+  ServerLogger.debug("event", event);
+});
+
+module.exports = Prisma;

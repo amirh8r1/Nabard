@@ -1,0 +1,94 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model user {
+  id         Int    @id @default(autoincrement()) @map("user_id")
+  userRoleId Int    @map("user_role_id")
+  username   String
+  password   String
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  role     user_role @relation(fields: [userRoleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  sessions session[]
+
+  @@index([id, username])
+}
+
+model user_role {
+  id        Int     @id @default(autoincrement()) @map("user_role_id")
+  code      String?
+  name      String
+  editable  Boolean @default(true)
+  deletable Boolean @default(true)
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  users       user[]
+  permissions user_permission[]
+
+  @@index([id])
+}
+
+model user_permission {
+  userRoleId   Int @map("user_role_id")
+  userActionId Int @map("user_action_id")
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  role   user_role   @relation(fields: [userRoleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  action user_action @relation(fields: [userActionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userRoleId, userActionId])
+  @@index([userRoleId, userActionId])
+}
+
+model user_action {
+  id   Int    @id @default(autoincrement()) @map("user_action_id")
+  code String
+  name String
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  permissions user_permission[]
+
+  @@index([id])
+}
+
+model session {
+  id           Int       @id @default(autoincrement()) @map("session_id")
+  userId       Int       @map("user_id")
+  accessToken  String    @map("access_token")
+  refreshToken String    @map("refresh_token")
+  userAgent    String?   @map("user_agent") @db.Text
+  userIP       String?   @map("user_ip")
+  loginTime    DateTime  @default(now()) @map("login_time")
+  usingTime    DateTime? @updatedAt @map("using_time")
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([id, userId, accessToken, refreshToken, userIP])
+}

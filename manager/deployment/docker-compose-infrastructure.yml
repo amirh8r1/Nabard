@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  nabard-database:
+    container_name: nabard-database
+    hostname: nabard-database
+    image: mysql:latest
+    restart: unless-stopped
+    ports:
+      - "7000:3306"
+    networks:
+      - nabard-network
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/nabard-database-password
+      - TZ=Asia/Tehran
+    secrets:
+      - nabard-database-password
+    volumes:
+      - nabard-database:/var/lib/mysql
+  nabard-database-panel:
+    container_name: nabard-database-panel
+    hostname: nabard-database-panel
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - "7001:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - TZ=Asia/Tehran
+    depends_on:
+      - nabard-database
+    networks:
+      - nabard-network
+
+networks:
+  nabard-network:
+    name: nabard-network
+
+volumes:
+  nabard-database:
+    name: nabard-database
+
+secrets:
+  nabard-database-password:
+    file: ./secrets/database-password.txt
