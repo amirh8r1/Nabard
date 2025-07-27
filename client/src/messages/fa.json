@@ -1,0 +1,46 @@
+{
+  "pages": {
+    "home": "خانه",
+    "login": "ورود",
+    "notFound": "۴۰۴",
+    "forbidden": "۴۰۳",
+    "serverError": "۵۰۰"
+  },
+  "others": {
+    "title": "پنل بازی",
+    "en": "انگلیسی",
+    "fa": "فارسی",
+    "light": "روشن",
+    "dark": "تاریک",
+    "logout": "خروج"
+  },
+  "login": {
+    "title": "ورود",
+    "userName": "نام‌کاربری",
+    "password": "رمز‌عبور",
+    "userNamePlaceHolder": "نام‌کاربری خود را وارد کنید.",
+    "passwordPlaceHolder": " رمز‌عبور خود را وارد کنید",
+    "userNameRequiredMessage": "لطفا نام‌‌کاربری خود را وارد کنید!",
+    "passwordRequiredMessage": "لطفا رمز‌‌عبور خود را وارد کنید!",
+    "submitButton": "تایید"
+  },
+  "home": {
+    "technicalPanel": "پنل فنی",
+    "commandDashboard": "داشبورد فرماندهی"
+  },
+  "forbidden": {
+    "title": "۴۰۳",
+    "subtitle": "متأسفیم، شما مجاز به دسترسی به این صفحه نیستید.",
+    "backHome": "بازگشت به خانه"
+  },
+  "notFound": {
+    "title": "۴۰۴",
+    "subtitle": "متأسفیم، صفحه‌ای که به آن مراجعه کرده‌اید وجود ندارد.",
+    "backHome": "بازگشت به خانه"
+  },
+  "serverError": {
+    "title": "۵۰۰",
+    "subtitle": "متأسفیم، مشکلی پیش آمده است",
+    "backHome": "بازگشت به خانه"
+  }
+}
