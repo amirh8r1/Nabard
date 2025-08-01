@@ -1,6 +1,6 @@
 import { Flex, Typography } from "antd";
 import { FC } from "react";
-import { FlightIcon } from "../blocks/Icons";
+import { ProfessorIcon, LessonsIcon, PlanningIcon } from "../blocks/Icons";
 import CardItem from "../components/Home/CardItem";
 import { useAntTheme } from "../hooks/useAntTheme";
 import { useTranslation } from "../hooks/useTranslation";
@@ -25,9 +25,35 @@ export const Home: FC = () => {
         }}
       >
         <CardItem
-          title={t("home.technicalPanel")}
+          title={t("home.professorPanel")}
           icon={
-            <FlightIcon
+            <ProfessorIcon
+              style={{
+                fontSize: 100,
+                fill: colorText,
+              }}
+            />
+          }
+          link={ROUTES.home}
+        />
+
+        <CardItem
+          title={t("home.lessonsPanel")}
+          icon={
+            <LessonsIcon
+              style={{
+                fontSize: 100,
+                fill: colorText,
+              }}
+            />
+          }
+          link={ROUTES.home}
+        />
+
+        <CardItem
+          title={t("home.planningPanel")}
+          icon={
+            <PlanningIcon
               style={{
                 fontSize: 100,
                 fill: colorText,

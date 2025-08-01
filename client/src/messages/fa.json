@@ -25,8 +25,9 @@
     "submitButton": "تایید"
   },
   "home": {
-    "technicalPanel": "پنل فنی",
-    "commandDashboard": "داشبورد فرماندهی"
+    "professorPanel": "پنل اساتید",
+    "lessonsPanel": "پنل دروس",
+    "planningPanel": "پنل برنامه‌ریزی"
   },
   "forbidden": {
     "title": "۴۰۳",

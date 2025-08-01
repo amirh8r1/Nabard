@@ -14,7 +14,13 @@ module.exports = class ServerExpress {
       const viewsPath = path.join(__dirname, "../views");
       const publicDirectoryPath = path.join(__dirname, "../public");
 
-      app.use(cors());
+      app.use(
+        cors({
+          origin: "http://localhost:5173", // آدرس کلاینت شما
+          methods: ["GET", "POST", "PUT", "DELETE"],
+          credentials: true, // اگر نیاز دارید کوکی‌ها ارسال شوند
+        })
+      );
       app.options("*", cors());
 
       app.use(helmet());
