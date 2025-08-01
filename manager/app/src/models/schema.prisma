@@ -92,3 +92,14 @@ model session {
 
   @@index([id, userId, accessToken, refreshToken, userIP])
 }
+
+model professor {
+  id           Int    @id @default(autoincrement()) @map("professor_id")
+  name         String @unique
+  workingHours Json   @default("{}")
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+}
