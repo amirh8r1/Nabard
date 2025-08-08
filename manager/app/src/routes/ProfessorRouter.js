@@ -25,7 +25,7 @@ module.exports = class ProfessorRouter {
       ResponseMiddleware.send
     );
 
-    router.patch(
+    router.put(
       "/:professorId",
       AuthMiddleware.auth,
       ProfessorController.update,
