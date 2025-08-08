@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AuthGuard } from "../guards/AuthGuard";
 import { NoAuthGuard } from "../guards/NoAuthGuard";
 import { Home } from "../pages/Home";
+import { ProfessorPanel } from "../pages/ProfessorPanel";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 import { ServerError } from "../pages/ServerError";
@@ -15,6 +16,10 @@ const authRoutes = [
   {
     path: ROUTES.home,
     element: <Home />,
+  },
+  {
+    path: ROUTES.professorPanel,
+    element: <ProfessorPanel />,
   },
 ];
 

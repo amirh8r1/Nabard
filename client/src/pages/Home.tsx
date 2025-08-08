@@ -34,7 +34,7 @@ export const Home: FC = () => {
               }}
             />
           }
-          link={ROUTES.home}
+          link={ROUTES.professorPanel}
         />
 
         <CardItem

@@ -22,6 +22,7 @@ export const THEMES = {
 export const ROUTES = {
   login: "/login",
   home: "/",
+  professorPanel: "/professor-panel",
   notFound: "/not-found",
   serverError: "/server-error",
   others: "*",

@@ -1,6 +1,7 @@
 {
   "pages": {
     "home": "home",
+    "professorPanel": "Professor panel",
     "login": "login",
     "notFound": "404",
     "forbidden": "403",
