@@ -1,17 +1,17 @@
 const Prisma = require("../databases/Prisma");
 
-const ProfessorSchema = require("../schemas/ProfessorSchema");
+const CourseSchema = require("../schemas/CourseSchema");
 
-module.exports = class ProfessorController {
+module.exports = class CourseController {
   static async getAll(user, req, res, next) {
     try {
-      const professors = await Prisma.professor.findMany({
-        where: { deleted: false, status: true },
+      const courses = await Prisma.course.findMany({
+        where: { status: true, deleted: false },
       });
 
       next({
         status: 200,
-        professors,
+        courses,
       });
     } catch (error) {
       next({
@@ -24,7 +24,9 @@ module.exports = class ProfessorController {
 
   static async create(user, req, res, next) {
     try {
-      const validation = await ProfessorSchema.create.safeParseAsync(req.body);
+      const validation = await CourseSchema.createCourseSchema.safeParseAsync(
+        req.body
+      );
 
       if (!validation.success) {
         return next({
@@ -32,17 +34,20 @@ module.exports = class ProfessorController {
           issues: validation.error.issues,
         });
       }
+      const durationPerWeek = validation.data.credit * 60;
 
-      const newProfessor = await Prisma.professor.create({
+      const newCourse = await Prisma.course.create({
         data: {
           name: validation.data.name,
-          workingHours: validation.data.workingHours,
+          credit: validation.data.credit,
+          durationPerWeek,
+          semester: validation.data.semester,
         },
       });
 
       next({
         status: 201,
-        professor: newProfessor,
+        course: newCourse,
       });
     } catch (error) {
       next({
@@ -55,41 +60,42 @@ module.exports = class ProfessorController {
 
   static async update(user, req, res, next) {
     try {
-      const { professorId } = req.params;
-
-      const validation = await ProfessorSchema.professorId.safeParseAsync({
-        professorId,
-      });
-      const bodyValidation = await ProfessorSchema.update.safeParseAsync(
+      const params = await CourseSchema.getByCourseIdSchema.safeParseAsync(
+        req.params
+      );
+      const validation = await CourseSchema.updateCourseSchema.safeParseAsync(
         req.body
       );
 
-      if (!validation.success || !bodyValidation.success) {
+      if (!validation.success || !params.success) {
         return next({
           status: 400,
-          issues: validation.error?.issues || bodyValidation.error?.issues,
+          issues: [].concat(params.error?.issues, validation.error?.issues),
         });
       }
-
-      const { name, workingHours } = bodyValidation.data;
-      if (!name && !workingHours) {
+      const { courseId } = params.data;
+      const { name, credit, semester } = validation.data;
+      if (!name && !credit && !semester) {
         return next({
           status: 400,
           message: "هیچ فیلدی برای بروزرسانی ارسال نشده است",
         });
       }
+      const durationPerWeek = credit * 60;
 
-      const updatedProfessor = await Prisma.professor.update({
-        where: { id: validation.data.professorId },
+      const updatedCourse = await Prisma.course.update({
+        where: { id: courseId },
         data: {
-          ...(name && { name }),
-          ...(workingHours && { workingHours }),
+          name,
+          credit,
+          durationPerWeek,
+          semester,
         },
       });
 
       next({
         status: 200,
-        professor: updatedProfessor,
+        course: updatedCourse,
       });
     } catch (error) {
       next({
@@ -102,31 +108,29 @@ module.exports = class ProfessorController {
 
   static async delete(user, req, res, next) {
     try {
-      const { professorId } = req.params;
-
-      const validation = await ProfessorSchema.professorId.safeParseAsync({
-        professorId,
-      });
-
-      if (!validation.success) {
+      const params = await CourseSchema.getByCourseIdSchema.safeParseAsync(
+        req.params
+      );
+      if (!params.success) {
         return next({
           status: 400,
-          issues: validation.error.issues,
+          issues: params.error?.issues,
         });
       }
+      const { courseId } = params.data;
 
-      const professorExists = await Prisma.professor.findUnique({
-        where: { id: validation.data.professorId, deleted: false },
+      const courseExists = await Prisma.course.findUnique({
+        where: { id: courseId, deleted: false },
       });
-      if (!professorExists) {
+      if (!courseExists) {
         return next({
           status: 404,
-          message: "استاد مورد نظر یافت نشد",
+          message: "درس مورد نظر یافت نشد",
         });
       }
 
-      await Prisma.professor.delete({
-        where: { id: validation.data.professorId },
+      await Prisma.course.delete({
+        where: { id: courseId },
       });
 
       next({

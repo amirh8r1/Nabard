@@ -103,3 +103,16 @@ model professor {
   createTime DateTime @default(now()) @map("create_time")
   updateTime DateTime @updatedAt @map("update_time")
 }
+
+model course {
+  id              Int    @id @default(autoincrement()) @map("course_id")
+  name            String @unique
+  credit          Int
+  durationPerWeek Int    @map("duration_per_week")
+  semester        Int
+
+  status     Boolean  @default(true)
+  deleted    Boolean  @default(false)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+}
