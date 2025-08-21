@@ -23,6 +23,7 @@ export const ROUTES = {
   login: "/login",
   home: "/",
   professorPanel: "/professor-panel",
+  coursePanel: "/course-panel",
   notFound: "/not-found",
   serverError: "/server-error",
   others: "*",

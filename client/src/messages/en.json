@@ -2,6 +2,7 @@
   "pages": {
     "home": "home",
     "professorPanel": "Professor panel",
+    "coursePanel": "Lessons Panel",
     "login": "login",
     "notFound": "404",
     "forbidden": "403",
