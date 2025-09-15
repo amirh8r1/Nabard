@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       target: development
     ports:
-      - "5173:5173" # Vite dev server
+      - "7004:5173" # Vite dev server
     volumes:
       - .:/app
       - /app/node_modules
