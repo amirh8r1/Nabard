@@ -1,4 +1,3 @@
-````markdown
 # 🎓 NABARD
 
 **Narm Afzar Barname Rizi Rahbordi Daneshgah**  
@@ -62,49 +61,47 @@ The platform allows creating, editing, deleting, and searching records, assignin
 - 🖥 phpMyAdmin
 - 📊 Prisma Studio
 
----
-
 ## 📂 Repository Structure
 
-````plaintext
+```
 📦 project-root
 ├── 📁 client
-│   ├── 📁 src                         # Frontend code (React + Ant Design)
-│   ├── deploy.sh                      # Frontend deploy script
-│   └── package.json
+│ ├── 📁 src # Frontend code (React + Ant Design)
+│ ├── deploy.sh # Frontend deploy script
+│ └── package.json
 │
 ├── 📁 manager
-│   ├── 📁 app
-│   │   ├── 📁 src                     # Backend code (Node.js + Prisma)
-│   │   └── prisma/                    # Schema and migrations
-│   │
-│   ├── 📁 deployment
-│   │   ├── docker-compose.yml         # Backend + Prisma Studio
-│   │   └── docker-compose-infrastructure.yml  # MySQL + phpMyAdmin
-│   │
-│   └── deploy.sh                      # Backend & infrastructure deploy script
+│ ├── 📁 app
+│ │ ├── 📁 src # Backend code (Node.js + Prisma)
+│ │ └── prisma/ # Schema and migrations
+│ │
+│ ├── 📁 deployment
+│ │ ├── docker-compose.yml # Backend + Prisma Studio
+│ │ └── docker-compose-infrastructure.yml # MySQL + phpMyAdmin
+│ │
+│ └── deploy.sh # Backend & infrastructure deploy script
 │
-├── deploy.sh                          # Main deploy script (runs backend & frontend)
+├── deploy.sh # Main deploy script (runs backend & frontend)
 └── README.md
-
----
+```
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
+
 Only **Docker** and **Docker Compose** are required to run the project:
+
 - [Install Docker](https://docs.docker.com/get-docker/)
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
----
-
 ### 2. Running the Entire System
+
 To start **all services (infrastructure + backend + frontend)** at once:
+
 ```bash
 chmod +x deploy.sh
 ./deploy.sh
-````
-````
+```
 
 This script:
 
@@ -120,8 +117,6 @@ After starting, the services are available at:
 | Backend (API) | http://localhost:7002 |
 | phpMyAdmin    | http://localhost:7001 |
 | MySQL         | localhost:7000        |
-
----
 
 ### 3. Running Services Individually
 
@@ -145,8 +140,6 @@ cd client
 chmod +x deploy.sh
 ./deploy.sh
 ```
-
----
 
 ## 🔌 API Endpoints
 
@@ -174,8 +167,6 @@ chmod +x deploy.sh
 | ------ | -------------------- | -------------------------------- |
 | POST   | `/planning/generate` | Generate schedule based on input |
 
----
-
 ## 🤝 Contributing
 
 1. Fork this repository.
@@ -183,9 +174,7 @@ chmod +x deploy.sh
 3. Commit and push your changes.
 4. Create a Pull Request.
 
----
-
 ## 📜 License
 
-This project is licensed under the **MIT License**.  
+This project is licensed under the **MIT License**.
 See the [LICENSE](LICENSE) file for details.
