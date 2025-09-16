@@ -7,6 +7,7 @@ import { NoAuthGuard } from "../guards/NoAuthGuard";
 import { Home } from "../pages/Home";
 import { ProfessorPanel } from "../pages/ProfessorPanel";
 import { CoursePanel } from "../pages/CoursePanel";
+import { PlanningPanel } from "../pages/PlanningPanel";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 import { ServerError } from "../pages/ServerError";
@@ -25,6 +26,10 @@ const authRoutes = [
   {
     path: ROUTES.coursePanel,
     element: <CoursePanel />,
+  },
+  {
+    path: ROUTES.planningPanel,
+    element: <PlanningPanel />,
   },
 ];
 

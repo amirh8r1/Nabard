@@ -4,7 +4,7 @@ import {
   CreateCourseRequest,
   CreateCourseResponse,
   UpdateCourseRequest,
-} from "./type";
+} from "./types";
 
 export const getAllCourses = (): Promise<GetAllCoursesResponse> => {
   return api.get("/course");

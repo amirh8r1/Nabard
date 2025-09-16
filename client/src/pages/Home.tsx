@@ -60,7 +60,7 @@ export const Home: FC = () => {
               }}
             />
           }
-          link={ROUTES.home}
+          link={ROUTES.planningPanel}
         />
       </Flex>
       <Typography.Text

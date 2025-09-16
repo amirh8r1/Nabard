@@ -7,7 +7,7 @@ import {
   updateCourse,
   deleteCourse,
 } from "../api/course";
-import { Course, CreateCourseRequest } from "../api/course/type";
+import { Course, CreateCourseRequest } from "../api/course/types";
 import CourseForm from "../components/CoursePanel/CourseForm";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 

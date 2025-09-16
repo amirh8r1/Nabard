@@ -24,6 +24,7 @@ export const ROUTES = {
   home: "/",
   professorPanel: "/professor-panel",
   coursePanel: "/course-panel",
+  planningPanel: "/planning-panel",
   notFound: "/not-found",
   serverError: "/server-error",
   others: "*",

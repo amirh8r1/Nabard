@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Form, Input, Button, InputNumber, Select } from "antd";
-import { CreateCourseRequest } from "../../api/course/type";
+import { CreateCourseRequest } from "../../api/course/types";
 
 const faToEnDigits = (str?: string): number => {
   if (!str) return NaN;
