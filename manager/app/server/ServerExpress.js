@@ -16,7 +16,7 @@ module.exports = class ServerExpress {
 
       app.use(
         cors({
-          origin: "http://localhost:5173", // آدرس کلاینت شما
+          origin: "http://localhost:7004", // آدرس کلاینت شما
           methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
           allowedHeaders: ["Content-Type", "Authorization"],
           credentials: true, // اگر نیاز دارید کوکی‌ها ارسال شوند

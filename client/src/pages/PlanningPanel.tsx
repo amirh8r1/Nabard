@@ -12,15 +12,23 @@ import {
   Spin,
   message,
 } from "antd";
+import Toast from "../components/PlanningPanel/Toast";
 import type { ColumnsType } from "antd/es/table";
 import { getAllCourses } from "../api/course"; // 📥 API دریافت لیست دروس
 import { getAllProfessors } from "../api/professor"; // 📥 API دریافت لیست اساتید
+import { generatePlan } from "../api/planning";
 import { Course } from "../api/course/types";
 import { Professor } from "../api/professor/types";
+import { GeneratedSession } from "../api/planning/types";
 
 const PlanningPanel: FC = () => {
   const [professors, setProfessors] = useState<Professor[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [plan, setPlan] = useState<GeneratedSession[]>([]);
+  const [toast, setToast] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [selectedProfessors, setSelectedProfessors] = useState<number[]>([]);
@@ -123,6 +131,12 @@ const PlanningPanel: FC = () => {
       const updated = checked
         ? [...current, profId]
         : current.filter((id) => id !== profId);
+
+      if (updated.length === 0) {
+        const { [courseId]: _, ...rest } = prev;
+        return rest;
+      }
+
       return { ...prev, [courseId]: updated };
     });
   };
@@ -134,6 +148,10 @@ const PlanningPanel: FC = () => {
       </div>
     );
   }
+
+  const showToast = (type: "success" | "error", text: string) => {
+    setToast({ type, text });
+  };
 
   return (
     <div style={{ padding: 24, maxWidth: "100%" }}>
@@ -267,26 +285,156 @@ const PlanningPanel: FC = () => {
 
       <br />
 
+      <br />
+      {plan.length > 0 && (
+        <div>
+          <Typography.Title level={4}>برنامه پیشنهادی</Typography.Title>
+          {Array.from(
+            new Set(
+              plan.map((p) => {
+                const course = courses.find((c) => c.id === p.courseId);
+                return course?.semester;
+              })
+            )
+          )
+            .sort((a, b) => (a || 0) - (b || 0))
+            .map((semester) => {
+              const semesterPlan = plan.filter((p) => {
+                const course = courses.find((c) => c.id === p.courseId);
+                return course?.semester === semester;
+              });
+
+              // روزهای هفته فارسی
+              const daysFa: Record<string, string> = {
+                saturday: "شنبه",
+                sunday: "یکشنبه",
+                monday: "دوشنبه",
+                tuesday: "سه‌شنبه",
+                wednesday: "چهارشنبه",
+              };
+
+              // تعیین اسلات‌ها (سورت بر اساس شروع)
+              const timeSlots = Array.from(
+                new Set(semesterPlan.map((s) => `${s.start}-${s.end}`))
+              ).sort((a, b) => {
+                const [sa] = a.split("-").map(Number);
+                const [sb] = b.split("-").map(Number);
+                return sa - sb;
+              });
+
+              const columns = [
+                {
+                  title: "روز",
+                  dataIndex: "day",
+                  key: "day",
+                  fixed: "left",
+                  width: 100,
+                },
+                ...timeSlots.map((slot) => ({
+                  title: slot,
+                  dataIndex: slot,
+                  key: slot,
+                  align: "center" as const,
+                  render: (sessions: any[]) => {
+                    if (!sessions || sessions.length === 0) return "-";
+                    return sessions.map((ses, i) => (
+                      <div key={i}>
+                        <b>{ses.courseName}</b>
+                        <br />
+                        <span style={{ fontSize: 12, color: "#888" }}>
+                          {ses.profName}
+                        </span>
+                      </div>
+                    ));
+                  },
+                })),
+              ];
+
+              // ساخت داده جدول (هر ردیف = یک روز)
+              const rows = Object.keys(daysFa).map((dayKey) => {
+                const row: any = { day: daysFa[dayKey] };
+                timeSlots.forEach((slot) => {
+                  const [start, end] = slot.split("-").map(Number);
+                  row[slot] = semesterPlan
+                    .filter(
+                      (s) =>
+                        s.day === dayKey && s.start === start && s.end === end
+                    )
+                    .map((s) => ({
+                      courseName:
+                        courses.find((c) => c.id === s.courseId)?.name || "",
+                      profName:
+                        professors.find((p) => p.id === s.professorId)?.name ||
+                        "",
+                    }));
+                });
+                return row;
+              });
+
+              return (
+                <div key={semester} style={{ marginBottom: 40 }}>
+                  <Typography.Title level={5}>ترم {semester}</Typography.Title>
+                  <Table
+                    columns={columns}
+                    dataSource={rows}
+                    rowKey="day"
+                    pagination={false}
+                    bordered
+                    size="small"
+                    scroll={{ x: "max-content" }}
+                  />
+                </div>
+              );
+            })}
+        </div>
+      )}
+
       {/* دکمه ایجاد پلن */}
       <Button
         type="primary"
-        onClick={() => {
+        onClick={async () => {
           const payload = Object.entries(assignments).map(
             ([courseId, profs]) => ({
               courseId: Number(courseId),
               professors: profs,
             })
           );
-          console.log("Assignments payload to send:", payload);
-          message.info("در نسخه بعدی این دکمه به API generate وصل می‌شود");
+
+          if (payload.length === 0) {
+            message.warning("هیچ ارتباطی بین استاد و درس تعریف نشده است");
+            return;
+          }
+
+          message.loading({ content: "در حال تولید برنامه...", key: "plan" });
+
+          try {
+            const res = await generatePlan({ assignments: payload });
+
+            if (res.status === 200 && res.plan) {
+              setPlan(res.plan);
+              showToast("success", "برنامه تولید شد");
+            } else {
+              showToast("error", res.message || "خطا در تولید برنامه");
+            }
+          } catch (err) {
+            message.error({
+              content: "ارتباط با سرور برقرار نشد",
+              key: "plan",
+            });
+          }
         }}
       >
         تولید برنامه پیشنهادی
       </Button>
 
-      <Typography.Text style={{ fontSize: 12, display: "block", marginTop: 8 }}>
-        نسخه متصل به API لیست اساتید و دروس
-      </Typography.Text>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.text}
+          onClose={() => setToast(null)}
+          duration={4}
+        />
+      )}
     </div>
   );
 };
