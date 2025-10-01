@@ -1,0 +1,30 @@
+services:
+  nabard-api:
+    container_name: nabard-api
+    hostname: nabard-api
+    build:
+      context: ../app/
+      dockerfile: Dockerfile
+      target: development
+      no_cache: true
+    restart: unless-stopped
+    volumes:
+      - /home/node/app/node_modules
+      - ../app:/home/node/app
+    ports:
+      - "7002:3000"
+      - "7003:5555"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /home/node/app/
+        npx prisma generate
+        npx prisma db push
+        pm2 start ecosystem.config.js --only "webservice-dev,prisma_studio"
+        pm2 log
+    networks:
+      - nabard-network
+networks:
+  nabard-network:
+    external: true

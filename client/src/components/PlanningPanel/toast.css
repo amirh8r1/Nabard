@@ -1,0 +1,31 @@
+.custom-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px; /* یا left برای سمت چپ */
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.custom-toast.success {
+  background-color: #52c41a; /* سبز */
+}
+
+.custom-toast.error {
+  background-color: #ff4d4f; /* قرمز */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

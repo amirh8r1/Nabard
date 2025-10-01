@@ -1,0 +1,51 @@
+{
+  "pages": {
+    "home": "home",
+    "professorPanel": "Professor panel",
+    "coursePanel": "Lessons Panel",
+    "planningPanel": "Planning Panel",
+    "login": "login",
+    "notFound": "404",
+    "forbidden": "403",
+    "serverError": "500"
+  },
+  "others": {
+    "title": "Nabard Panel",
+    "en": "english",
+    "fa": "farsi",
+    "light": "light",
+    "dark": "dark",
+    "logout": "logout"
+  },
+  "login": {
+    "title": "Login",
+    "userName": "Username",
+    "password": "Password",
+    "userNamePlaceHolder": "Enter your username",
+    "passwordPlaceHolder": "Enter your password",
+    "userNameRequiredMessage": "Please input your username!",
+    "passwordRequiredMessage": "Please input your password!",
+    "submitButton": "Submit"
+  },
+  "home": {
+    "professorPanel": "Professor panel",
+    "lessonsPanel": "Lessons Panel",
+    "planningPanel": "Planning Panel"
+  },
+
+  "forbidden": {
+    "title": "403",
+    "subtitle": "Sorry, you are not authorized to access this page.",
+    "backHome": "Back Home"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Sorry, the page you visited does not exist.",
+    "backHome": "Back Home"
+  },
+  "serverError": {
+    "title": "500",
+    "subtitle": "Sorry, something went wrong.",
+    "backHome": "Back Home"
+  }
+}
